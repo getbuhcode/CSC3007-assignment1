@@ -5,7 +5,7 @@
         <title>CSC3007 Assignment 1</title>
     </head>
     <body>
-        <table>
+        <table id="table">
             <tr>
                 <th>Metric</th>
                 <th>National</th>
@@ -15,124 +15,62 @@
                 <th>North</th>
                 <th>South</th>
             </tr>
-            <tr>
-                <td>psi_twenty_four_hourly</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>psi_three_hourly</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>pm10_sub_index</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>pm25_sub_index</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>so2_sub_index</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>o3_sub_index</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>co_sub_index</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>pm10_twenty_four_hourly</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>pm25_twenty_four_hourly</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>no2_one_hour_max</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>so2_twenty_four_hourl</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>co_eight_hour_max</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>o3_eight_hour_max</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
         </table>
 
+        <script>
+            fetch('https://api.data.gov.sg/v1/environment/psi')
+                .then(function (response) {
+                    console.log(response);
+                    return response.json();
+                })
+                .then(function (data) {
+                    arr = data.items
+                    console.log(data.items[0].timestamp);
+                    appendData(data);
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+            
+            function appendData(data){
+
+                var table = document.getElementById("table");
+                var readings = data.items[0].readings;
+                
+                // loop through the readings' json object
+                for(var key in readings){
+
+                    // create new tr and td for each data field
+                    var row = document.createElement("tr");
+                    var metricCell = document.createElement("td");
+                    var nationalCell = document.createElement("td");
+                    var centralCell = document.createElement("td");
+                    var westCell = document.createElement("td");
+                    var eastCell = document.createElement("td");
+                    var northCell = document.createElement("td");
+                    var SouthCell = document.createElement("td");
+
+                    // assign the data to the corresponding field 
+                    metricCell.innerHTML = key;
+                    row.append(metricCell);
+                    nationalCell.innerHTML = readings[key]["national"]
+                    row.append(nationalCell);
+                    centralCell.innerHTML = readings[key]["central"]
+                    row.append(centralCell);
+                    westCell.innerHTML = readings[key]["west"]
+                    row.append(westCell);
+                    eastCell.innerHTML = readings[key]["east"]
+                    row.append(eastCell);
+                    northCell.innerHTML = readings[key]["north"]
+                    row.append(northCell);
+                    SouthCell.innerHTML = readings[key]["south"]
+                    row.append(SouthCell);                   
+
+                    // append tr to table
+                    table.appendChild(row); 
+                }
+
+            }
+        </script> 
     </body>
 </html>
