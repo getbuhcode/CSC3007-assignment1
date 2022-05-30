@@ -5,6 +5,7 @@
         <title>CSC3007 Assignment 1</title>
     </head>
     <body>
+        <p id="date"></p>
         <table id="table">
             <tr>
                 <th>Metric</th>
@@ -36,7 +37,11 @@
 
                 var table = document.getElementById("table");
                 var readings = data.items[0].readings;
-                
+
+                var time = new Date(data.items[0].timestamp)
+                var date = document.getElementById("date");
+                date.innerHTML = "Date/Time: " + time.toLocaleString();
+
                 // loop through the readings' json object
                 for(var key in readings){
 
