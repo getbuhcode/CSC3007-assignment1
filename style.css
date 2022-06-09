@@ -6,3 +6,8 @@ table, th, td {
 th, td {
     padding: 10px;
 }
+
+#body {
+    width: 80%;
+    margin: auto;
+}
